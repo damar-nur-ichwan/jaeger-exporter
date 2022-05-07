@@ -1,13 +1,13 @@
-require('dotenv').config()
+
 const { default: axios } = require('axios')
-const host = `${process.env.ELASTICSEARCH_HOST}`
+const { host } = require('../../configs')['elasticsearch']
 const logger = require('../logger/logger.util')
 
 async function GetIndices(){
     // Try
     try {
         // Get Data from Elasticsearch
-        let data = await axios.get(`http://${host}/_cat/indices/jaeger-span*`)
+        let data = await axios.get(`${host}/_cat/indices/jaeger-span*`)
         data = data.data
 
         // Get index name
@@ -17,7 +17,7 @@ async function GetIndices(){
         })
         data.sort()
         data.pop()
-        
+
         // Return
         return data
     }
@@ -25,6 +25,11 @@ async function GetIndices(){
     // Catch
     catch (err){
         logger.error(err)
+
+        // Retry
+        setTimeout(() => {
+            GetIndices()
+        }, 15000);
     }
 }
 

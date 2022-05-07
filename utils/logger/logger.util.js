@@ -1,7 +1,8 @@
 const app = require('../../package.json')
 const { createLogger, format, transports } = require('winston');
-const { combine, timestamp, printf } = format;
+const nodeEnv = process.env.NODE_ENV || 'development'
 
+const { combine, timestamp, printf } = format;
 const myFormat = printf(({ level, message, layer, timestamp, __dirname }) => {
   return `${timestamp} [${level}] ${layer?`[${layer}] `:''}${message} ${__dirname||''}`;
 });
@@ -29,6 +30,6 @@ const logger = {
   })
 }
 
-module.exports = logger[process.env.NODE_ENV || 'development']
+module.exports = logger[nodeEnv]
 
 

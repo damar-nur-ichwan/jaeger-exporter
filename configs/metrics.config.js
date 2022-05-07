@@ -1,12 +1,6 @@
 const { MeterProvider } = require('@opentelemetry/sdk-metrics-base');
 const { PrometheusExporter } = require('@opentelemetry/exporter-prometheus');
-const { endpoint, port } = PrometheusExporter.DEFAULT_OPTIONS;
-
-const exporter = new PrometheusExporter({}, () => {
-  console.log(
-    `prometheus scrape endpoint: http://localhost:${port}${endpoint}`,
-  );
-});
+const exporter = new PrometheusExporter();
 
 const meter = new MeterProvider({
   exporter,

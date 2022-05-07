@@ -7,7 +7,7 @@ const UpdateLast = require("../UpdateLast/UpdateLast.util");
 const UpdateMetrics = require("../UpdateMetrics/UpdateMetrics.util");
 
 async function Initial(){
-
+    
     // set last timestamp to zero 0
     await UpdateLast(0)
 
