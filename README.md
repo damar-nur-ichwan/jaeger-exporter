@@ -1,3 +1,5 @@
+* developed by Damar Nur Ichwan
+
 # Instalation
 
 * note: make sure that your DOCKER, JAEGER, ELASTICSEARCH, and PROMETHEUS are running!
