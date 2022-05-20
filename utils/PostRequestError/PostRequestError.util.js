@@ -12,6 +12,6 @@ function PostRequestError(value=0,label={}){
     if(status === 'ERROR'){
         configs.metrics.requestErrorCounter.add(value,label)
     } else {
-        configs.metrics.requestErrorCounter.add(0,label)
+        configs.metrics.requestErrorCounter.add(value,label)
     }
 }

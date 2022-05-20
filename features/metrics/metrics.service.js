@@ -1,16 +1,20 @@
-const { scrapeInterval, elasticsearch } = require('../../configs')
+const { scrapeInterval, elasticsearch, initStyle, prometheus } = require('../../configs')
 const { initial, GetIndices, logger, GetTraces, GetLast, RestructureTrace, ReconditionTrace, UpdateMetrics } = require('../../utils/utils')
 const { PrometheusExporter } = require('@opentelemetry/exporter-prometheus');
 const { endpoint, port } = PrometheusExporter.DEFAULT_OPTIONS;
 
 logger.info(`elasticsearch target endpoint: ${elasticsearch.host}`)
 logger.info(`prometheus scrape endpoint: http://localhost:${port}${endpoint}`)
+if(initStyle === 'prometheus'){
+    logger.info(`prometheus target endpoint: ${prometheus.host}`)
+    logger.info(`instance target: ${prometheus.instanceTarget}`)
+}
 
 async function Metrics(){
     
     //waiting
     logger.info('preparing')
-    await new Promise(r => setTimeout(r, 60000));
+    // await new Promise(r => setTimeout(r, 60000));
 
     // Initial
     logger.info('initiating')

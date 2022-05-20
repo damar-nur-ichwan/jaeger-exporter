@@ -1,3 +1,4 @@
+const { initStyle } = require("../../configs");
 const GetIndices = require("../GetIndices/GetIndices.util");
 const GetTraces = require('../GetTraces/GetTraces.util');
 const ReconditionTrace = require("../ReconditionTrace/ReconditionTrace.util");
@@ -5,8 +6,13 @@ const RestructureTrace = require("../RestructureTrace/RestructureTrace.util");
 const ToTimestamp = require('../ToTimestamp/ToTimestamp.util');
 const UpdateLast = require("../UpdateLast/UpdateLast.util");
 const UpdateMetrics = require("../UpdateMetrics/UpdateMetrics.util");
+const GetLastMetrics = require("../GetLastMetrics/GetLastMetrics.util");
+const PostInstanceName = require("../PostInstanceName/PostInstanceName.util");
+const PostResponseTime = require("../PostResponseTime/PostResponseTime.util");
+const PostRequest = require("../PostRequest/PostRequest.util");
+const PostRequestError = require("../PostRequestError/PostRequestError.util");
 
-async function Initial(){
+async function elasticsearch(){
     
     // set last timestamp to zero 0
     await UpdateLast(0)
@@ -50,4 +56,39 @@ async function Initial(){
     return 'initiated'
 }
 
-module.exports = Initial
+async function prometheus(){
+
+    // Get last metrics
+    const lastMetrics = await GetLastMetrics()
+
+    // Update Metrics
+    lastMetrics.map(({name, client, service, key, value}) => {
+
+        // Variables
+        const label = {client, service, key}
+        
+        //Post Instance Name
+        PostInstanceName({client, service})
+        
+        // Update Metrics Value
+        switch(name){
+            case 'requests_total': PostRequest(value, label)
+            case 'requests_error_total': PostRequestError(value, label)
+            case 'response_time_total': PostResponseTime(value, label)
+            break;
+        }
+    })
+
+    //update last read
+    await UpdateLast( parseInt(new Date / 1000))
+}
+
+async function none(){}
+
+const Initial = {
+    elasticsearch, 
+    prometheus,
+    none
+}
+
+module.exports = Initial[initStyle]
