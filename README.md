@@ -24,7 +24,7 @@ SCRAPE_INTERVAL
 # INIT_STYLE: select 'elasticsearch', 'prometheus', or 'none'. By default, it is set to 'none'.
 INIT_STYLE
 ```
-*IMPORTANT*
+*IMPORTANT*: 
 If you use the initialization style ```prometheus```, you must add the following environment:
 ``` env
 # PROMETHEUS_HOST: defines the prometheus host endpoint used to store your summary data here.
@@ -251,6 +251,7 @@ services:
       - "9464:9464"
     restart: on-failure
     depends_on:
+      - prometheus
       - elasticsearch
     networks:
       - monitoring
