@@ -14,7 +14,7 @@ async function Metrics(){
     
     //waiting
     logger.info('preparing')
-    // await new Promise(r => setTimeout(r, 60000));
+    await new Promise(r => setTimeout(r, 30000));
 
     // Initial
     logger.info('initiating')
