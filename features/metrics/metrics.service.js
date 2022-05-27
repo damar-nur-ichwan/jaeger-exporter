@@ -14,7 +14,7 @@ async function Metrics(){
     
     //waiting
     logger.info('preparing')
-    await new Promise(r => setTimeout(r, 60000));
+    // await new Promise(r => setTimeout(r, 60000));
 
     // Initial
     logger.info('initiating')
@@ -39,10 +39,10 @@ async function Metrics(){
 
             // Restructure Trace
             traces = RestructureTrace(traces)
-           
+            
             // Recondition Trace
             traces = ReconditionTrace(traces)
-
+            
             // Update metrics
             await UpdateMetrics(traces)
             

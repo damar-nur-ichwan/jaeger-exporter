@@ -30,7 +30,6 @@ function RestructureTrace(data=[]){
         delete span.operationName
         delete span.startTime
         delete span.logs
-        delete span.process
         delete span.references
     })
     

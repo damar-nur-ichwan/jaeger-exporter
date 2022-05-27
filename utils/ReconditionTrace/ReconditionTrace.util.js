@@ -2,7 +2,7 @@
 let find = require('../../configs').findSvcName
 
 function ReconditionTrace (trace=[]){
-    
+   
     // Grouping
     let servers = [], clients = []
     trace.map((span) => {
@@ -38,7 +38,7 @@ function ReconditionTrace (trace=[]){
             })
         }
     })
-  
+
     // If server parentId has not clientId
     servers.map(server=>{
         let check = 0
@@ -56,9 +56,9 @@ function ReconditionTrace (trace=[]){
     // Delete the symbols '()' at the Service Name && resimple output
     let resimple = []
     newData = newData.map(span=>{
-        if(span.tags['service.name']){
+        if(span.process['serviceName']){
             let newString = '', service = '', external=''
-            span.tags['service.name'].split('(').map(v=>{newString += v})
+            span.process['serviceName'].split('(').map(v=>{newString += v})
             newString.split(')').map(v=> service += v)
             newString = ''
             span.external.split('(').map(v=>{newString += v})

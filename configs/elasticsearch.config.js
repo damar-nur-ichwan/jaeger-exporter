@@ -1,5 +1,5 @@
 require('dotenv').config()
 
 module.exports = {
-    host: (process.env.ELASTICSEARCH_HOST || 'http://localhost:9200')
+    host: process.env.ELASTICSEARCH_HOST || 'http://localhost:9200'
 }
