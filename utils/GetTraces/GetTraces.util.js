@@ -22,9 +22,7 @@ async function GetTraces(param = {indexDate : '', time: {gt: 0, lte: 0}}){
         logger.error(err)
 
         // Retry
-        setTimeout(() => {
-            GetTraces(param)
-        }, 15000);
+        return false
     }
 }
 

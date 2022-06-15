@@ -8,18 +8,21 @@ async function GetIndices(){
     try {
         // Get Data from Elasticsearch
         let data = await axios.get(`${host}/_cat/indices/jaeger-span*`)
-        data = data.data
-
+        data = data.data || null
+        
         // Get index name
         data =  data.split('jaeger-span-')
-        .map(element =>{
-            return `jaeger-span-${element.slice(0,10)}`
-        })
-        data.sort()
-        data.pop()
+        
+        if(data.length > 0){
+            data = data.map(element =>{
+                return `jaeger-span-${element.slice(0,10)}`
+            }) || []
+            data.sort()
+            data.pop()
+        }
 
         // Return
-        return data
+        return data || ['']
     }
 
     // Catch
@@ -30,6 +33,8 @@ async function GetIndices(){
         setTimeout(() => {
             GetIndices()
         }, 15000);
+
+        return []
     }
 }
 

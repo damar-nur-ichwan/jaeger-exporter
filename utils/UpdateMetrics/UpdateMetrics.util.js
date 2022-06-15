@@ -36,7 +36,8 @@ async function UpdateMetrics(traces = []){
                     PostRequest(1,labels[i])
 
                     //Post Request Error Count
-                    PostRequestError(1,labels[i])
+                    if(labels[i].status === 'ERROR') { PostRequestError(1,labels[i]) }
+                    else { PostRequestError(0,labels[i]) }
 
                     //update last read
                     await UpdateLast(timestamp[i])

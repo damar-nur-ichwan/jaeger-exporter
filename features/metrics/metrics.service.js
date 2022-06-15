@@ -1,4 +1,4 @@
-const { scrapeInterval, elasticsearch, initStyle, prometheus } = require('../../configs')
+const { scrapeInterval, elasticsearch, initStyle, prometheus, nodeEnv } = require('../../configs')
 const { initial, GetIndices, logger, GetTraces, GetLast, RestructureTrace, ReconditionTrace, UpdateMetrics } = require('../../utils/utils')
 const { PrometheusExporter } = require('@opentelemetry/exporter-prometheus');
 const { endpoint, port } = PrometheusExporter.DEFAULT_OPTIONS;
@@ -14,7 +14,7 @@ async function Metrics(){
     
     //waiting
     logger.info('preparing')
-    await new Promise(r => setTimeout(r, 30000));
+    if(nodeEnv !== 'development') await new Promise(r => setTimeout(r, 30000));
 
     // Initial
     logger.info('initiating')
@@ -26,7 +26,7 @@ async function Metrics(){
 
             // Get Last Date of Indices
             let lastDate = await GetIndices()
-            
+    
             lastDate = lastDate[lastDate.length -1].replace('jaeger-span-','')
             
             // Get Traces
