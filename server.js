@@ -1,4 +1,6 @@
-require('suprboard-tracer')()
-const {metrics} = require('./features/features')
+const { monitoring } = require('./configs')
+const { metrics } = require('./features/features')
+
+if(monitoring) require('suprboard-tracer')()
 
 metrics()

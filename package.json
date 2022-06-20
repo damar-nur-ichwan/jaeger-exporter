@@ -15,7 +15,7 @@
     "@opentelemetry/exporter-prometheus": "0.27.0",
     "@opentelemetry/sdk-metrics-base": "0.27.0",
     "axios": "0.26.1",
-    "dni-file-system": "1.0.3",
+    "dni-file-system": "^1.0.3",
     "dotenv": "16.0.0",
     "suprboard-tracer": "^0.30.0",
     "winston": "3.7.2"

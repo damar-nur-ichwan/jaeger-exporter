@@ -12,10 +12,16 @@ This application provides 3 initialization styles that can be adjusted to your n
 - ```prometheus```: initialize with Prometheus datasource. This style only retrieves the last summary data stored in Prometheus.
 - ```none```: without any initialization. With this style, all data will start from the value 0.
 
+## Monitoring
+You can monitor the performance of this jaeger exporter by adding the following environment variables:
+```
+JAEGER_EXPORTER_MONITORING = true
+```
+
 ## Environment
 Make sure you have the following environments set up:
 ``` env
-#NODE_ENV (required): you can choose 'development' or 'production'. by default is 'development
+#NODE_ENV (required): you can choose **development** or **production**. by default is **production**
 NODE_ENV
 
 #Tracing (required)
@@ -29,11 +35,11 @@ ELASICSEARCH_HOST
 # SCRAPE_INTERVAL: Tracing data capture time range in Elasticsearch. Write in milliseconds. By default, it is set to 15000 (15 seconds)
 SCRAPE_INTERVAL
 
-# INIT_STYLE: select 'elasticsearch', 'prometheus', or 'none'. By default, it is set to 'none'.
+# INIT_STYLE: select **elasticsearch**, **prometheus**, or **none**. By default, it is set to **elasticsearch**.
 INIT_STYLE
 ```
 *IMPORTANT*: 
-If you use the initialization style ```prometheus```, you must add the following environment:
+If you use the initialization style **prometheus**, you must add the following environment:
 ``` env
 # PROMETHEUS_HOST: defines the prometheus host endpoint used to store your summary data here.
 PROMETHEUS_HOST
@@ -140,8 +146,6 @@ services:
     environment: 
     - NODE_ENV=production
     - INSTANCE_NAME=jaeger-exporter
-    - EXPORTER=jaeger
-    - EXPORTER_URL=http://jaeger-collector:14268
     - ELASTICSEARCH_HOST=http://elasticsearch:9200
     - INIT_STYLE=elasticsearch
     ports:
@@ -257,8 +261,6 @@ services:
     environment: 
     - NODE_ENV=production
     - INSTANCE_NAME=jaeger-exporter
-    - EXPORTER=jaeger
-    - EXPORTER_URL=http://jaeger-collector:14268
     - ELASTICSEARCH_HOST=http://elasticsearch:9200
     - INIT_STYLE=prometheus
     - PROMETHEUS_HOST=http://prometheus:9090

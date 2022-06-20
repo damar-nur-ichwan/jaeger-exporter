@@ -1,10 +1,9 @@
 module.exports = {
-    initial: require('./Initial/initial.util'),
+    initiation: require('./initiation/initiation.util'),
     GetTraces: require('./GetTraces/GetTraces.util'),
     GetIndices: require('./GetIndices/GetIndices.util'),
     logger: require('./logger/logger.util'),
-    GetLast: require('./GetLast/GetLast.util'),
     RestructureTrace: require('./RestructureTrace/RestructureTrace.util'),
-    ReconditionTrace: require('./ReconditionTrace/ReconditionTrace.util'),
+    BuildConnectivityData: require('./BuildConnectivityData/BuildConnectivityData.util'),
     UpdateMetrics: require('./UpdateMetrics/UpdateMetrics.util')
 }

@@ -4,37 +4,19 @@ const { host } = require('../../configs')['elasticsearch']
 const logger = require('../logger/logger.util')
 
 async function GetIndices(){
-    // Try
     try {
-        // Get Data from Elasticsearch
-        let data = await axios.get(`${host}/_cat/indices/jaeger-span*`)
-        data = data.data || null
-        
-        // Get index name
-        data =  data.split('jaeger-span-')
-        
-        if(data.length > 0){
-            data = data.map(element =>{
-                return `jaeger-span-${element.slice(0,10)}`
-            }) || []
-            data.sort()
-            data.pop()
-        }
+        const response = await axios.get(`${host}/_cat/indices/jaeger-span*`)
+        let indices = response.data
+        if(!indices) return false
+        indices =  indices.split('jaeger-span-')
+        indices = indices.map(element => `jaeger-span-${element.slice(0,10)}`)
+        indices.sort()
+        indices.pop()
+        return indices
+    } catch (err){
+        logger.error('elasticsearch not connected')
+        process.exit()
 
-        // Return
-        return data || ['']
-    }
-
-    // Catch
-    catch (err){
-        logger.error(err)
-
-        // Retry
-        setTimeout(() => {
-            GetIndices()
-        }, 15000);
-
-        return []
     }
 }
 

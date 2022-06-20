@@ -5,5 +5,6 @@ module.exports = {
     elasticsearch: require('./elasticsearch.config'),
     nodeEnv: require('./nodeEnv.config'),
     initStyle: require('./initStyle.config'),
-    prometheus: require('./prometheus.config')
+    prometheus: require('./prometheus.config'),
+    monitoring: require('./monitoring.config')
 }

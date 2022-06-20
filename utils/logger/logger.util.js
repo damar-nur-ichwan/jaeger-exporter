@@ -1,6 +1,6 @@
 const app = require('../../package.json')
 const { createLogger, format, transports } = require('winston');
-const nodeEnv = process.env.NODE_ENV || 'development'
+const { nodeEnv } = require('../../configs')
 
 const { combine, timestamp, printf } = format;
 const myFormat = printf(({ level, message, layer, timestamp, __dirname }) => {
