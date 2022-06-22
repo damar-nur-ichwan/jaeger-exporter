@@ -39,12 +39,3 @@ async function running (){
     const connectivityData = BuildConnectivityData(restructuredTraces)
     await UpdateMetrics(connectivityData)
 }
-
-async function isInitSucces(){
-    const response = await axios('http://localhost:9464/metrics')
-    if(response.data === "# no registered metrics") {
-        logger.info("initiation failed")
-        return false
-    }
-    return true
-}

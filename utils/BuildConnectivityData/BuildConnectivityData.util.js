@@ -17,6 +17,7 @@ function groupping(trace = []){
             case 'client': clients.push(span); break; 
         }
     })
+    
     return { servers, clients }
 }
 
@@ -30,6 +31,7 @@ function buildConnectivityData(clients = [], servers = []){
         servers.map(server=>{
             if(server.parentID && client.spanID === server.parentID){
                 client['external'] = server.process['serviceName']
+                client['externalGroup'] = server.process['serviceGroup']
                 connectivityData.push(client)
                 check++
             }
@@ -39,7 +41,7 @@ function buildConnectivityData(clients = [], servers = []){
         if(check === 0){
             find.map(val=>{
                 if(client.tags[val]){
-                    client['external'] = `${val.split('.')[0]}: ${client.tags[val]}`
+                    client['external'] = `${val.split('.')[0]}.${client.tags[val]}`
                     connectivityData.push(client)
                 }
             })
@@ -63,20 +65,24 @@ function buildConnectivityData(clients = [], servers = []){
 
 function reconditionServiceName(connectivityData = []){
     connectivityData = connectivityData.map(span=>{
-        let newString = '', service = '', external=''
-        span.process['serviceName'].split('(').forEach(value => newString += value)
+        let newString = '', service = '', external='', {serviceName, serviceGroup} = span.process
+        serviceName.split('(').forEach(value => newString += value)
         newString.split(')').forEach(value => service += value)
         newString = ''
         span.external.split('(').forEach(value => newString += value)
         newString.split(')').forEach(value => external += value)
-        return {
+        
+        let output = {
             kind: span.tags['span.kind'],
             service,
             timestamp: span.startTimeMillis,
             duration: span.duration,
             status: span.tags['otel.status_code'] === 'ERROR' ? 'ERROR':'OK',
-            external
+            external,
         }
+        if (serviceGroup) output['serviceGroup'] = serviceGroup
+        if (span.externalGroup) output['externalGroup'] = span.externalGroup
+        return output
     })
     return connectivityData
 }

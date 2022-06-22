@@ -9,6 +9,7 @@ function RestructureTrace(data=[]){
             if(tag.key === 'otel.status_code' || tag.key === 'span.kind' || tag.key === 'service.name'){
                 newTags[tag.key] = tag.value
             }
+            if(tag.key === 'serviceGroup') span['process']['serviceGroup'] = tag.value
             find.forEach((key)=>{
                 if(tag.key === key){
                     newTags[tag.key] = tag.value
@@ -21,6 +22,9 @@ function RestructureTrace(data=[]){
         if(span.references.length > 0){
             span['parentID'] = span.references[0].spanID
         }
+        span.process.tags.forEach( tag => {
+            if(tag.key === 'serviceGroup') span['process']['serviceGroup'] = tag.value
+        })
     })    
     return data
 }

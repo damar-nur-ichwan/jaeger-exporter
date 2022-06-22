@@ -16,6 +16,8 @@ async function GetLastMetrics(){
                 client: metric.client,
                 key: metric.key,
                 service: metric.service,
+                serviceGroup: metric.serviceGroup,
+                clientGroup: metric.clientGroup,
                 value: parseInt(values[values.length -1][1])
             })
         })

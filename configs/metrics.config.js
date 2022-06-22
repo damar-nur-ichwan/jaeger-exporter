@@ -23,9 +23,13 @@ const instanceName = meter.createUpDownCounter('instance_name', {
   description: 'for instace name list',
 })
 
+const instanceGroup = meter.createUpDownCounter('instance_group', {
+  description: 'for instace group list',
+})
 module.exports = {
   requestCounter,
   requestErrorCounter,
   responseTime,
-  instanceName
+  instanceName,
+  instanceGroup
 }

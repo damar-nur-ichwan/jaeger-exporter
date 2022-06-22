@@ -12,10 +12,13 @@ This application provides 3 initialization styles that can be adjusted to your n
 - ```prometheus```: initialize with Prometheus datasource. This style only retrieves the last summary data stored in Prometheus.
 - ```none```: without any initialization. With this style, all data will start from the value 0.
 
-## Monitoring
-You can monitor the performance of this jaeger exporter by adding the following environment variables:
+## Tracing
+You can trace this jaeger exporter by adding the following environment variables:
 ```
 JAEGER_EXPORTER_MONITORING = true
+INSTANCE_NAME = jaeger-exporter
+EXPORTER = jaeger
+EXPORTER_URL = http://<your jaeger collector host>:14268
 ```
 
 ## Environment
@@ -23,11 +26,6 @@ Make sure you have the following environments set up:
 ``` env
 #NODE_ENV (required): you can choose **development** or **production**. by default is **production**
 NODE_ENV
-
-#Tracing (required)
-INSTANCE_NAME = jaeger-exporter
-EXPORTER = jaeger
-EXPORTER_URL = http://<your jaeger collector host>:14268
 
 # ELASTICSEARCH_HOST (required): defines the elasticsearch endpoint host used to store your Jaeger data here.
 ELASICSEARCH_HOST

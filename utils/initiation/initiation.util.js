@@ -13,6 +13,7 @@ const PostRequest = require("../PostRequest/PostRequest.util");
 const PostRequestError = require("../PostRequestError/PostRequestError.util");
 const logger = require("../logger/logger.util");
 const { default: axios } = require("axios");
+const PostInstanceGroup = require("../PostInstanceGroup/PostInstanceGroup.util");
 
 async function elasticsearch(){
     logger.info('initiating with elasticsearch')
@@ -51,9 +52,10 @@ async function prometheus(){
         return await elasticsearch()
     }
     
-    lastMetrics.forEach(({ name, client, service, key, value }) => {
+    lastMetrics.forEach(({ name, client, service, key, value, serviceGroup, clientGroup }) => {
         const label = {client, service, key}
-        PostInstanceName({ client, service })
+        PostInstanceName({ client, service, serviceGroup, clientGroup, key })
+        PostInstanceGroup({serviceGroup, clientGroup})
         
         switch(name){
             case 'requests_total': PostRequest(value, label)
