@@ -27,18 +27,18 @@ function buildConnectivityData(clients = [], servers = []){
     clients.map((client) => {
 
         // If client id has server parentId
-        let check = 0
+        let check = false
         servers.map(server=>{
             if(server.parentID && client.spanID === server.parentID){
                 client['external'] = server.process['serviceName']
                 client['externalGroup'] = server.process['serviceGroup']
                 connectivityData.push(client)
-                check++
+                check = true
             }
         })
 
         // If client id has not server parentId
-        if(check === 0){
+        if(!check){
             find.map(val=>{
                 if(client.tags[val]){
                     client['external'] = `${val.split('.')[0]}.${client.tags[val]}`
@@ -54,8 +54,16 @@ function buildConnectivityData(clients = [], servers = []){
         clients.map(client=>{
             if(server.parentID && server.parentID === client.spanID) check = true
         })
-        if(check){
-            server['external'] = 'Client'
+        if(!check){
+            const userAgent = server.tags['http.user_agent'] || undefined
+            if(!userAgent || (userAgent && (userAgent.includes(' ') || !userAgent.includes('.')))) {
+                server['external'] = 'Client'
+            }
+            else{
+                server['externalGroup'] = userAgent.split('.')[0]
+                server['external'] = userAgent.split('.')[1]
+            }
+            
             connectivityData.push(server)
         }
     })
