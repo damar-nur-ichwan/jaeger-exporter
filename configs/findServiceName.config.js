@@ -1,4 +1,1 @@
-module.exports = [
-    'http.host',
-    'db.name'
-]
+module.exports = ["http.host", "db.system", "db.name"];
