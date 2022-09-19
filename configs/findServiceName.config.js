@@ -1,1 +1,1 @@
-module.exports = ["http.host", "db.system", "db.name"];
+module.exports = ["http.host", "peer.service", "db.name"];
