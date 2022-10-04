@@ -14,8 +14,6 @@ COPY --chown=node:node package-lock.json package.json ./
 
 RUN npm ci
 
-VOLUME /data
-
 COPY --chown=node:node . .
 
 EXPOSE 9464

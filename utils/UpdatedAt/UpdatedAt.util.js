@@ -1,12 +1,7 @@
-const { UpdateFile } = require("dni-file-system")
-
-async function UpdatedAt(timestamp=0){
-    timestamp = parseInt(timestamp)
-    try{
-        await UpdateFile('./data/UpdatedAt.json',JSON.stringify(timestamp))
-    } catch (err){
-        return logger.error(err)
-    }
+const { appendFileSync, writeFileSync } = require("fs");
+function UpdatedAt(timestamp = 0) {
+  appendFileSync("data/UpdatedAt.json", JSON.stringify(timestamp));
+  writeFileSync("data/UpdatedAt.json", JSON.stringify(timestamp));
 }
 
-module.exports = UpdatedAt
+module.exports = UpdatedAt;

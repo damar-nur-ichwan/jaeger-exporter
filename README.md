@@ -1,19 +1,26 @@
 This project was developed by Damar Nur Ichwan
 
 # Jaeger Exporter
-This is an application that you can use to summarize the *OpenTelemetry Tracing* data stored by Jaeger, then export it to Prometheus metric form.
+
+This is an application that you can use to summarize the _OpenTelemetry Tracing_ data stored by Jaeger, then export it to Prometheus metric form.
 Then, you can use these metrics as input data for Connectivity Dashboard or Dependecy Dashboard
 
 ## Initialization
+
 Initialization here is the application activity to find the last summary data that has been saved. This serves as the basic data for subsequent calculations.
+
 ### Style
+
 This application provides 3 initialization styles that can be adjusted to your needs. They are:
-- ```elasticsearch```: initialize with elasticsearch datasource. This style works by calculating all Jaeger data stored in Elasticsearch.
-- ```prometheus```: initialize with Prometheus datasource. This style only retrieves the last summary data stored in Prometheus.
-- ```none```: without any initialization. With this style, all data will start from the value 0.
+
+- `elasticsearch`: initialize with elasticsearch datasource. This style works by calculating all Jaeger data stored in Elasticsearch.
+- `prometheus`: initialize with Prometheus datasource. This style only retrieves the last summary data stored in Prometheus.
+- `none`: without any initialization. With this style, all data will start from the value 0.
 
 ## Tracing
+
 You can trace this jaeger exporter by adding the following environment variables:
+
 ```
 JAEGER_EXPORTER_MONITORING = true
 INSTANCE_NAME = jaeger-exporter
@@ -22,8 +29,10 @@ EXPORTER_URL = http://<your jaeger collector host>:14268
 ```
 
 ## Environment
+
 Make sure you have the following environments set up:
-``` env
+
+```env
 #NODE_ENV (required): you can choose **development** or **production**. by default is **production**
 NODE_ENV
 
@@ -36,9 +45,11 @@ SCRAPE_INTERVAL
 # INIT_STYLE: select **elasticsearch**, **prometheus**, or **none**. By default, it is set to **elasticsearch**.
 INIT_STYLE
 ```
-*IMPORTANT*: 
+
+_IMPORTANT_:
 If you use the initialization style **prometheus**, you must add the following environment:
-``` env
+
+```env
 # PROMETHEUS_HOST: defines the prometheus host endpoint used to store your summary data here.
 PROMETHEUS_HOST
 
@@ -47,7 +58,9 @@ INSTANCE_TARGET
 ```
 
 ## Installation Example
+
 In order for you to better understand how to install Jaeger Exporter, consider the following installation example in the form of Docker Compose.
+
 ```yml
 version: "3"
 
@@ -91,12 +104,13 @@ services:
     restart: on-failure
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
-    command: [
-      "--es.server-urls=http://elasticsearch:9200",
-      "--es.num-shards=1",
-      "--es.num-replicas=0",
-      "--log-level=error"
-    ]
+    command:
+      [
+        "--es.server-urls=http://elasticsearch:9200",
+        "--es.num-shards=1",
+        "--es.num-replicas=0",
+        "--log-level=error",
+      ]
     depends_on:
       - elasticsearch
     networks:
@@ -128,11 +142,12 @@ services:
       - "16686:16686"
       - "16687:16687"
     restart: on-failure
-    command: [
-      "--es.server-urls=http://elasticsearch:9200",
-      "--span-storage.type=elasticsearch",
-      "--log-level=debug"
-    ]
+    command:
+      [
+        "--es.server-urls=http://elasticsearch:9200",
+        "--span-storage.type=elasticsearch",
+        "--log-level=debug",
+      ]
     depends_on:
       - elasticsearch
       - jaeger-agent
@@ -141,11 +156,11 @@ services:
 
   jaeger-exporter:
     image: damarnurichwan/jaeger-exporter
-    environment: 
-    - NODE_ENV=production
-    - INSTANCE_NAME=jaeger-exporter
-    - ELASTICSEARCH_HOST=http://elasticsearch:9200
-    - INIT_STYLE=elasticsearch
+    environment:
+      - NODE_ENV=production
+      - INSTANCE_NAME=jaeger-exporter
+      - ELASTICSEARCH_HOST=http://elasticsearch:9200
+      - INIT_STYLE=elasticsearch
     ports:
       - "9464:9464"
     restart: on-failure
@@ -153,16 +168,17 @@ services:
       - elasticsearch
     networks:
       - monitoring
-      
+
 volumes:
   esdata:
     driver: local
-    
+
 networks:
   monitoring:
 ```
 
 ### Initialize Style with Prometheus
+
 ```yml
 version: "3"
 
@@ -206,12 +222,13 @@ services:
     restart: on-failure
     environment:
       - SPAN_STORAGE_TYPE=elasticsearch
-    command: [
-      "--es.server-urls=http://elasticsearch:9200",
-      "--es.num-shards=1",
-      "--es.num-replicas=0",
-      "--log-level=error"
-    ]
+    command:
+      [
+        "--es.server-urls=http://elasticsearch:9200",
+        "--es.num-shards=1",
+        "--es.num-replicas=0",
+        "--log-level=error",
+      ]
     depends_on:
       - elasticsearch
     networks:
@@ -243,11 +260,12 @@ services:
       - "16686:16686"
       - "16687:16687"
     restart: on-failure
-    command: [
-      "--es.server-urls=http://elasticsearch:9200",
-      "--span-storage.type=elasticsearch",
-      "--log-level=debug"
-    ]
+    command:
+      [
+        "--es.server-urls=http://elasticsearch:9200",
+        "--span-storage.type=elasticsearch",
+        "--log-level=debug",
+      ]
     depends_on:
       - elasticsearch
       - jaeger-agent
@@ -256,13 +274,13 @@ services:
 
   jaeger-exporter:
     image: damarnurichwan/jaeger-exporter
-    environment: 
-    - NODE_ENV=production
-    - INSTANCE_NAME=jaeger-exporter
-    - ELASTICSEARCH_HOST=http://elasticsearch:9200
-    - INIT_STYLE=prometheus
-    - PROMETHEUS_HOST=http://prometheus:9090
-    - INSTANCE_TARGET=jaeger-exporter:9464
+    environment:
+      - NODE_ENV=production
+      - INSTANCE_NAME=jaeger-exporter
+      - ELASTICSEARCH_HOST=http://elasticsearch:9200
+      - INIT_STYLE=prometheus
+      - PROMETHEUS_HOST=http://prometheus:9090
+      - INSTANCE_TARGET=jaeger-exporter:9464
     ports:
       - "9464:9464"
     restart: on-failure
@@ -271,11 +289,11 @@ services:
       - elasticsearch
     networks:
       - monitoring
-      
+
 volumes:
   esdata:
     driver: local
-    
+
 networks:
   monitoring:
 ```
