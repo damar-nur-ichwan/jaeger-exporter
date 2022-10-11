@@ -1,6 +1,6 @@
 const { MeterProvider } = require("@opentelemetry/sdk-metrics-base");
 const { PrometheusExporter } = require("@opentelemetry/exporter-prometheus");
-const exporter = new PrometheusExporter();
+const exporter = new PrometheusExporter({ appendTimestamp: false });
 
 const meter = new MeterProvider({
   exporter,
