@@ -28,10 +28,10 @@ function groupping(trace = []) {
     coupleSpans.forEach((coupleSpan) => {
       if (span.spanID === coupleSpan.spanID) isSingle = false;
     });
-    if (isSingle)
-      span.tags["span.kind"] === "client"
-        ? singleClientSpans.push(span)
-        : singleServiceSpans.push(span);
+    if (isSingle) {
+      if (span.tags["span.kind"] === "client") singleClientSpans.push(span);
+      if (span.tags["span.kind"] === "server") singleServiceSpans.push(span);
+    }
   });
   return { coupleSpans, singleClientSpans, singleServiceSpans };
 }
